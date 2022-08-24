@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/6409e52a" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_270189B9-DDA5-4FC5-AB30-1C1A507E7A06" name="model-6409e52a" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/6409e52a">
+  <dmn:extensionElements/>
+  <dmn:itemDefinition id="_6675E33E-622C-40D7-964D-A23E53B432D3" name="Entscheidung" isCollection="false">
+    <dmn:allowedValues kie:constraintType="enumeration" id="_9BECEC41-EAD3-4A7B-83D1-4EDB9BCB8F57">
+      <dmn:text>"ABGELEHNT", "MANUELLE BEARBEITUNG", "AKZEPTIERT"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_E20691A7-FA80-48DB-99D1-5FE50CDEE48D" name="Monatliche Einnahmen" isCollection="false">
+    <dmn:typeRef>number</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_30209B96-5E10-44BA-97D5-90342DEA12FA" name="Höhe des Kredits" isCollection="false">
+    <dmn:typeRef>number</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_60D3BAFB-7692-4B69-96EB-07E5226CC74B" name="Monatliche Ausgaben" isCollection="false">
+    <dmn:typeRef>number</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:decision id="_F4B757E8-CA4E-470C-BAA1-C48990E860EA" name="Monatlicher Überschuss">
+    <dmn:extensionElements/>
+    <dmn:variable id="_A87ADCD9-1CEC-44E1-B222-4E35BA242BDF" name="Monatlicher Überschuss"/>
+    <dmn:informationRequirement id="_B5E7325F-C000-446C-BB1F-0904935F0434">
+      <dmn:requiredInput href="#_9ED5B55A-BFE4-4709-A536-D5129A590418"/>
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_996D8981-E601-4FA7-A163-C095A9A2ECF8">
+      <dmn:requiredInput href="#_53296AB2-1322-402A-BD9F-74F7517C7B45"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_E5001E48-2963-454E-9579-5B870076FA17">
+      <dmn:text>Monatliche Einnahmen - Monatliche Ausgaben</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_07E754F6-BE1B-4887-8A21-7A409DE10C72" name="Verhältnis zwischen monatlichem Überschuss und Höhe des Kredits">
+    <dmn:extensionElements/>
+    <dmn:variable id="_449F97FE-4A7A-4EB7-857E-E59804B71750" name="Verhältnis zwischen monatlichem Überschuss und Höhe des Kredits"/>
+    <dmn:informationRequirement id="_5647B604-49D8-4C2A-A291-19347B16A06A">
+      <dmn:requiredDecision href="#_F4B757E8-CA4E-470C-BAA1-C48990E860EA"/>
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_BE3B655A-7FC1-4161-A1E3-DE6DB96C2561">
+      <dmn:requiredInput href="#_CDCB3FBA-41B0-4D48-B04A-516530A5A404"/>
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_23512329-210C-44A3-B19E-A8B8BF9C51BA">
+      <dmn:text>if Monatlicher Überschuss &lt;= 0 then null else Höhe des Kredits / Monatlicher Überschuss</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_3AECC97E-A1EE-4E00-9ECB-D321F2759A6F" name="Entscheidung">
+    <dmn:extensionElements/>
+    <dmn:variable id="_27F2CD43-6B5D-42DC-8676-5C1E199E0EBC" name="Entscheidung" typeRef="Entscheidung"/>
+    <dmn:informationRequirement id="_091F8E7F-3710-4537-A1B0-8225DCF8E9D3">
+      <dmn:requiredDecision href="#_07E754F6-BE1B-4887-8A21-7A409DE10C72"/>
+    </dmn:informationRequirement>
+    <dmn:decisionTable id="_6230DCCB-3B4A-4B50-A5F5-42EAB05C6BD1" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+      <dmn:input id="_1F47F8D5-2E53-45B3-AB91-DF61BA1FA975">
+        <dmn:inputExpression id="_2B281728-3F4A-4B99-88DE-241F54E69D86" typeRef="number">
+          <dmn:text>Verhältnis zwischen monatlichem Überschuss und Höhe des Kredits</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output id="_96C5C206-6051-4FB5-BA2D-64608414C0A2"/>
+      <dmn:annotation name="annotation-1"/>
+      <dmn:rule id="_D1891650-3C63-4652-82FA-AD3EF3169DA2">
+        <dmn:inputEntry id="_BECCCA73-9D8A-4A43-BEE0-957A3ACE3882">
+          <dmn:text>null</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_553ABDD0-AF6A-4425-9772-AEC6F4AB7657">
+          <dmn:text>"ABGELEHNT"</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_1663243C-FC45-4775-9687-F09AE8E16376">
+        <dmn:inputEntry id="_F0111087-B25D-46A2-866F-D02421331BEB">
+          <dmn:text>&lt;=5</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_915FA10F-A651-42D9-95B6-2C29DAFDC77D">
+          <dmn:text>"AKZEPTIERT"</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_82C5FF39-E679-4256-AC10-E060BC45DE6D">
+        <dmn:inputEntry id="_7E3A65B5-23BC-4729-96A7-3B6CAF9A65AC">
+          <dmn:text>[6..8]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_4D048A4B-3B10-45CD-9CEC-48BB1D2DDF27">
+          <dmn:text>"MANUELLE BEARBEITUNG"</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+      <dmn:rule id="_5356B618-0A58-4228-AA52-838F6D811C6D">
+        <dmn:inputEntry id="_6FA7257D-AAD9-4CA5-8B28-5782E99F79AE">
+          <dmn:text>&gt;8</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_1985FF2C-69AA-4ECB-ADA0-BF5480BFB0A9">
+          <dmn:text>"ABGELEHNT"</dmn:text>
+        </dmn:outputEntry>
+        <dmn:annotationEntry>
+          <dmn:text/>
+        </dmn:annotationEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:inputData id="_53296AB2-1322-402A-BD9F-74F7517C7B45" name="Monatliche Ausgaben">
+    <dmn:extensionElements/>
+    <dmn:variable id="_0BFB95D2-CCF3-47E3-8EF0-0930B1A8856A" name="Monatliche Ausgaben" typeRef="Monatliche Ausgaben"/>
+  </dmn:inputData>
+  <dmn:inputData id="_CDCB3FBA-41B0-4D48-B04A-516530A5A404" name="Höhe des Kredits">
+    <dmn:extensionElements/>
+    <dmn:variable id="_AE1AEF4A-CB20-443B-85C3-B40AF26F4BB7" name="Höhe des Kredits" typeRef="Höhe des Kredits"/>
+  </dmn:inputData>
+  <dmn:inputData id="_9ED5B55A-BFE4-4709-A536-D5129A590418" name="Monatliche Einnahmen">
+    <dmn:extensionElements/>
+    <dmn:variable id="_A80BF013-D932-4E85-B036-98AC59373C64" name="Monatliche Einnahmen" typeRef="Monatliche Einnahmen"/>
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_B7590029-A6A8-4BE8-987D-1F99D2E3FE8A" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_E5001E48-2963-454E-9579-5B870076FA17">
+            <kie:width>583</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_23512329-210C-44A3-B19E-A8B8BF9C51BA">
+            <kie:width>798</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_6230DCCB-3B4A-4B50-A5F5-42EAB05C6BD1">
+            <kie:width>50</kie:width>
+            <kie:width>482</kie:width>
+            <kie:width>213</kie:width>
+            <kie:width>111</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_F4B757E8-CA4E-470C-BAA1-C48990E860EA" dmnElementRef="_F4B757E8-CA4E-470C-BAA1-C48990E860EA" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="652" y="436" width="176" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_07E754F6-BE1B-4887-8A21-7A409DE10C72" dmnElementRef="_07E754F6-BE1B-4887-8A21-7A409DE10C72" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="506" y="275" width="262" height="57"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_3AECC97E-A1EE-4E00-9ECB-D321F2759A6F" dmnElementRef="_3AECC97E-A1EE-4E00-9ECB-D321F2759A6F" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="587" y="134" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_53296AB2-1322-402A-BD9F-74F7517C7B45" dmnElementRef="_53296AB2-1322-402A-BD9F-74F7517C7B45" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="642" y="543" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_CDCB3FBA-41B0-4D48-B04A-516530A5A404" dmnElementRef="_CDCB3FBA-41B0-4D48-B04A-516530A5A404" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="358" y="436" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_9ED5B55A-BFE4-4709-A536-D5129A590418" dmnElementRef="_9ED5B55A-BFE4-4709-A536-D5129A590418" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="496" y="493.3421052631579" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-drg-_B5E7325F-C000-446C-BB1F-0904935F0434" dmnElementRef="_B5E7325F-C000-446C-BB1F-0904935F0434">
+        <di:waypoint x="546" y="518.3421052631579"/>
+        <di:waypoint x="740" y="461"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_996D8981-E601-4FA7-A163-C095A9A2ECF8" dmnElementRef="_996D8981-E601-4FA7-A163-C095A9A2ECF8">
+        <di:waypoint x="692" y="568"/>
+        <di:waypoint x="740" y="461"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_5647B604-49D8-4C2A-A291-19347B16A06A" dmnElementRef="_5647B604-49D8-4C2A-A291-19347B16A06A">
+        <di:waypoint x="740" y="461"/>
+        <di:waypoint x="637" y="332"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_BE3B655A-7FC1-4161-A1E3-DE6DB96C2561" dmnElementRef="_BE3B655A-7FC1-4161-A1E3-DE6DB96C2561">
+        <di:waypoint x="408" y="461"/>
+        <di:waypoint x="637" y="303.5"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_091F8E7F-3710-4537-A1B0-8225DCF8E9D3-AUTO-SOURCE-AUTO-TARGET" dmnElementRef="_091F8E7F-3710-4537-A1B0-8225DCF8E9D3">
+        <di:waypoint x="637" y="275"/>
+        <di:waypoint x="637" y="184"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
